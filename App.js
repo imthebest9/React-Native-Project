@@ -3,9 +3,18 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 export default function App() {
-  const [name, setName] = useState('shaun');
-  const [age, setAge] = useState('30');
+  // const [name, setName] = useState('shaun');
+  // const [age, setAge] = useState('30');
   // const [person, setPerson] = useState({name: 'mario', age: '40'});
+  const [people, setPeople] = useState([
+    {name: 'shaun', key: '1'},
+    {name: 'yama', key: '2'},
+    {name: 'yoshi', key: '3'},
+    {name: 'taki', key: '4'},
+    {name: 'frog', key: '5'},
+    {name: 'toad', key: '6'},
+    {name: 'shaunt', key: '7'},
+  ]);
 
   // const clickHandler = () => {
   //   setName('chun-li');
@@ -42,6 +51,13 @@ export default function App() {
         onChangeText={(val) => setAge(val)} />
 
       <Text>Name: {name}, Age: {age}</Text> */}
+      {people.map((item) => {
+        return (
+          <View>
+            <Text>{item.name}</Text>
+          </View>
+        )
+      })}
       <StatusBar style="auto" />
     </View>
   );
@@ -51,8 +67,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 40,
+    paddingHorizontal: 20,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   header:{
     backgroundColor: 'pink',
