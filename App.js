@@ -1,25 +1,47 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import Header from './components/header';
+import TodoItem from './components/TodoItem';
+import AddTodo from './components/addTodo';
 
 export default function App() {
   // const [name, setName] = useState('shaun');
   // const [age, setAge] = useState('30');
   // const [person, setPerson] = useState({name: 'mario', age: '40'});
-  const [people, setPeople] = useState([
-    {name: 'shaun', key: '1'},
-    {name: 'yama', key: '2'},
-    {name: 'yoshi', key: '3'},
-    {name: 'taki', key: '4'},
-    {name: 'frog', key: '5'},
-    {name: 'toad', key: '6'},
-    {name: 'shaunt', key: '7'},
-  ]);
+  // const [people, setPeople] = useState([
+  //   {name: 'shaun', id: '1'},
+  //   {name: 'yama', id: '2'},
+  //   {name: 'yoshi', id: '3'},
+  //   {name: 'taki', id: '4'},
+  //   {name: 'frog', id: '5'},
+  //   {name: 'toad', id: '6'},
+  //   {name: 'shaunt', id: '7'},
+  // ]);
 
   // const clickHandler = () => {
   //   setName('chun-li');
   //   setPerson({name: 'lok', age: '30'});
   // }
+
+  // const pressHandler = (id) => {
+  //   console.log(id);
+  //   setPeople((prevPeople) => {
+  //     return prevPeople.filter(person => person.id != id)
+  //   })
+  // }
+
+  const [todos, setTodos] = useState([
+    {text: 'buy coffee', key: '1'},
+    {text: 'create an app', key: '2'},
+    {text: 'play on the switch', key: '3'},
+  ]);
+
+  const pressHandler = (key) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter(todo => todo.key != key);
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -51,13 +73,39 @@ export default function App() {
         onChangeText={(val) => setAge(val)} />
 
       <Text>Name: {name}, Age: {age}</Text> */}
-      {people.map((item) => {
-        return (
-          <View>
-            <Text>{item.name}</Text>
-          </View>
-        )
-      })}
+      {/* <ScrollView>
+        {people.map(item => (
+            <View key={item.key}>
+              <Text style={styles.item}>{item.name}</Text>
+            </View>
+          )
+        )}
+      </ScrollView> */}
+
+      {/* <FlatList 
+        numColumns={2}
+        keyExtractor={(item) => item.id}
+        data={people}
+        renderItem={({item}) => (
+          <TouchableOpacity onPress={() => pressHandler(item.id)}>
+            <Text style={styles.item}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
+      /> */}
+
+      <Header />
+      <View style={styles.content}>
+        <AddTodo />
+        <View style={styles.list}>
+          <FlatList 
+            data = {todos}
+            renderItem={({item}) => (
+              <TodoItem item={item} pressHandler={pressHandler} />
+            )}
+          />
+        </View>
+      </View>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -93,4 +141,17 @@ const styles = StyleSheet.create({
     margin: 10,
     width: 200
   },
+  item: {
+    marginTop: 24,
+    padding: 40,
+    backgroundColor: 'pink',
+    fontSize: 28,
+    marginHorizontal: 10,
+  },
+  content: {
+    padding: 40,
+  },
+  list:{
+    marginTop: 20,
+  }
 });
