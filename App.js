@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Header from './components/header';
 import TodoItem from './components/TodoItem';
 import AddTodo from './components/addTodo';
+import Sandbox from './components/sandbox'
 
 export default function App() {
   // const [name, setName] = useState('shaun');
@@ -43,71 +44,92 @@ export default function App() {
     })
   }
 
+  const submitHandler = (text) => {
+
+    if(text.length > 3){
+      setTodos((prevTodos) => {
+        return [
+          {text: text, key: Math.random().toString()},
+          ...prevTodos
+        ];
+      });
+    } else{
+      Alert.alert('OOPS!', 'todos must be over 3 chars long', [
+        {text: 'Understood', onPress: () => console.log('alert closed')}
+      ]);
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      {/* <View style={styles.header}>
-        <Text style={styles.boldText}>Hello, World!</Text>
-      </View>
-      <View style={styles.body}>
-        <Text style={styles.boldText}>Somethi<Text>test</Text>ngggggg</Text>
-        <Text>Somethingggggg</Text>
-        <Text>Somethingggggg</Text>
-      </View>
-      <Text>My name is {name}</Text> */}
-      {/* <Text>His name is {person.name} and his age is {person.age}</Text> */}
-      {/* <View style={styles.buttonContainer}>
-        <Button title='update state' onPress={clickHandler} />
-      </View> */}
-      {/* <Text>Enter name: </Text>
-      <TextInput 
-        multiline
-        style={styles.input}
-        placeHolder='eg: Doo'
-        onChangeText={(val) => setName(val)} />
-
-      <Text>Enter age: </Text>
-      <TextInput 
-        keyboardType='numeric'
-        style={styles.input}
-        placeHolder='eg: 66'
-        onChangeText={(val) => setAge(val)} />
-
-      <Text>Name: {name}, Age: {age}</Text> */}
-      {/* <ScrollView>
-        {people.map(item => (
-            <View key={item.key}>
-              <Text style={styles.item}>{item.name}</Text>
-            </View>
-          )
-        )}
-      </ScrollView> */}
-
-      {/* <FlatList 
-        numColumns={2}
-        keyExtractor={(item) => item.id}
-        data={people}
-        renderItem={({item}) => (
-          <TouchableOpacity onPress={() => pressHandler(item.id)}>
-            <Text style={styles.item}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-      /> */}
-
-      <Header />
-      <View style={styles.content}>
-        <AddTodo />
-        <View style={styles.list}>
-          <FlatList 
-            data = {todos}
-            renderItem={({item}) => (
-              <TodoItem item={item} pressHandler={pressHandler} />
-            )}
-          />
+    // <Sandbox/>
+    <TouchableWithoutFeedback onPress={() => {
+      Keyboard.dismiss();
+      console.log('dismissed keyboard');
+    }}>
+      <View style={styles.container}>
+        {/* <View style={styles.header}>
+          <Text style={styles.boldText}>Hello, World!</Text>
         </View>
-      </View>
+        <View style={styles.body}>
+          <Text style={styles.boldText}>Somethi<Text>test</Text>ngggggg</Text>
+          <Text>Somethingggggg</Text>
+          <Text>Somethingggggg</Text>
+        </View>
+        <Text>My name is {name}</Text> */}
+        {/* <Text>His name is {person.name} and his age is {person.age}</Text> */}
+        {/* <View style={styles.buttonContainer}>
+          <Button title='update state' onPress={clickHandler} />
+        </View> */}
+        {/* <Text>Enter name: </Text>
+        <TextInput 
+          multiline
+          style={styles.input}
+          placeHolder='eg: Doo'
+          onChangeText={(val) => setName(val)} />
 
-      <StatusBar style="auto" />
-    </View>
+        <Text>Enter age: </Text>
+        <TextInput 
+          keyboardType='numeric'
+          style={styles.input}
+          placeHolder='eg: 66'
+          onChangeText={(val) => setAge(val)} />
+
+        <Text>Name: {name}, Age: {age}</Text> */}
+        {/* <ScrollView>
+          {people.map(item => (
+              <View key={item.key}>
+                <Text style={styles.item}>{item.name}</Text>
+              </View>
+            )
+          )}
+        </ScrollView> */}
+
+        {/* <FlatList 
+          numColumns={2}
+          keyExtractor={(item) => item.id}
+          data={people}
+          renderItem={({item}) => (
+            <TouchableOpacity onPress={() => pressHandler(item.id)}>
+              <Text style={styles.item}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+        /> */}
+
+        <Header />
+        <View style={styles.content}>
+          <AddTodo submitHandler={submitHandler} />
+          <View style={styles.list}>
+            <FlatList 
+              data = {todos}
+              renderItem={({item}) => (
+                <TodoItem item={item} pressHandler={pressHandler} />
+              )}
+            />
+          </View>
+        </View>
+        <StatusBar style="auto" />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -115,8 +137,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 40,
-    paddingHorizontal: 20,
     // alignItems: 'center',
     // justifyContent: 'center',
   },
@@ -150,8 +170,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 40,
+    flex: 1,
   },
   list:{
     marginTop: 20,
+    flex: 1,
   }
 });
